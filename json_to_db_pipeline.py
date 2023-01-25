@@ -1,6 +1,8 @@
 import json
 import requests
+
 catalog = json.load(open('out.json'))
+
 for i in catalog:
     try:
         if 'sku' not in i:
