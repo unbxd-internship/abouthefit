@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
-import products from '../products'
+import products from '../products';
 import { useParams } from 'react-router-dom'
 import props from 'prop-types'
 
@@ -11,7 +11,7 @@ function ProductScreen({match}) {
     
 
     
-    const findproduct=products.find((p)=>p._id===temp._id)
+    const findproduct=products.find((p)=>p.sku===temp.sku)
     
     
     return (
@@ -21,18 +21,18 @@ function ProductScreen({match}) {
             
             <Row>
                 <Col md={6}>    
-                    <Image src={findproduct.image} alt={findproduct.name} fluid />
+                    <Image src={findproduct.productImage} alt={findproduct.title} fluid />
                 </Col>
                 <Col md={3}>
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <h3>{findproduct.name}</h3>
+                            <h3>{findproduct.title}</h3>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            Price: Rs. {findproduct.price}
+                            Price: $ {findproduct.price}
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            Description: {findproduct.description}
+                            Description: {findproduct.productDescription}
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>

@@ -5,26 +5,28 @@ import { Link } from 'react-router-dom'
 function Product({product}) {
   return (
     <Card className=" my-3 p-3 rounded">
-        <Link to={`/product/${product._id}`}>
-            <Card.Img src= {product.image} />
+        <Link to={`/product/${product.sku}`}>
+            <Card.Img src= {product.productImage} />
         </Link>
 
         <Card.Body>
-            <Link to={`/product/${product._id}`}>
+            <Link to={`/product/${product.sku}`}>
                 <Card.Title as="div"> 
-                    <strong> {product.name}</strong>
-                </Card.Title> 
+                    <strong> {product.title}</strong>
+                </Card.Title>
             </Link>
-            <Card.Text>
+            <Card.Text as="h3">
+                    $ {product.price}
+            </Card.Text> 
+            
+            {/*<Card.Text>
                 <div className="my-3">
                     {product.rating} from {product.numReviews}
                 </div>
             </Card.Text>
+            
             <Card.Text as="h3">
-                Rs. {product.price}
-            </Card.Text>
-            {/* <Card.Text as="h3">
-                {product._id}
+                {product.sku}
             </Card.Text> */}
 
         </Card.Body>
