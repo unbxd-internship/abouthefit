@@ -17,9 +17,9 @@ class Search_Model:
         if 'sort' in request_params:
             sort = request_params['sort']
             if sort == 'price asce':
-                self.link = self.link + "sort=price%20asce"
+                self.link = self.link + "&sort=price asce"
             elif sort == 'price desc':
-                self.link = self.link + "sort=price%20desc"
+                self.link = self.link + "&sort=price desc"
 
     def get_page(self, request_params):
         if 'page' in request_params:
