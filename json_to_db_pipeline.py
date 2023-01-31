@@ -1,12 +1,12 @@
 import json
 import requests
-from database_connection import database_connection
+from database_model import Database_Model
 
 class ingest():
 
     def __init__(self, json_path):
         self.json_path = json_path
-        self.database_connection = database_connection()
+        self.Database_Model = Database_Model()
 
     
     def validate_data(self, data):
@@ -23,10 +23,15 @@ class ingest():
         return True
     
     def into_db(self):
-        self.database_connection.delete_table()
-        self.database_connection.create_table()
-        self.database_connection.start_session()
+
+        self.Database_Model.delete_table()
+
+        self.Database_Model.create_table()
+
+        self.Database_Model.start_session()
+
         catalog = json.load(open(self.json_path))
+
         for i in catalog:
             try:
                 if self.validate_data(i):
@@ -36,5 +41,8 @@ class ingest():
             except:
                 print("AHHHHH")
                 
-        self.database_connection.commit()
-        self.database_connection.close_session()
+        self.Database_Model.commit()
+        self.Database_Model.close_session()
+
+if __name__ == "__main__":
+    ingest('out.json').into_db()
