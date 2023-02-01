@@ -53,20 +53,15 @@ class ingest():
             try:
                 if self.validate_data(i):
                     r = requests.post('http://127.0.0.1:5000/insert', json=i)
-                    if r.status_code != 200:
-                        print("AHHHHH")
-                    #print(f"Status Code: {r.status_code}, Response: {r.json()}")
+                    print(f"Status Code: {r.status_code}, Response: {r.json()}")
                 else:
                     fixed_i = self.fix_data(i)
                     count+=1
                     if fixed_i:
-                        #print("missed parameters",count)
                         r = requests.post('http://127.0.0.1:5000/insert', json=fixed_i)
-                        if r.status_code != 200:
-                            print("AHHHHH")
-                        #print(f"Status Code: {r.status_code}, Response: {r.json()}")
+                        print(f"Status Code: {r.status_code}, Response: {r.json()}")
             except:
-                print("AHHHHH")
+                print("Error Loading Data")
                 
         self.Database_Model.commit()
         self.Database_Model.close_session()

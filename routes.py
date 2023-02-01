@@ -9,13 +9,29 @@ import search_controller
 import product_controller
 import json_to_db_pipeline
 import database_model
+import redis
+import pickle
 # from category_controller import Category_Controller as category_controller
 # from search_controller import Search_Controller as search_controller
 # from product_controller import Product_Controller as product_controller
 
 app = Flask(__name__)
 CORS(app)
+redis_cache = redis.Redis(host='localhost', port=6379, db=0)
 
+def cache(key, value= None, ttl= None):
+    if value:
+        if ttl:
+            redis_cache.setex(key, ttl, pickle.dumps(value))
+        else:
+            redis_cache.set(key, pickle.dumps(value))
+    else:
+        value = redis_cache.get(key)
+        if value:
+            return pickle.loads(value)
+        else:
+            return None
+        
 @app.route('/insert', methods=['POST'])
 def insert():
     #print("insert")
@@ -83,8 +99,12 @@ def get_category():
 @app.route('/category/<categorylevel1>/<categorylevel2>', methods=['GET'])
 @app.route('/category/<categorylevel1>/<categorylevel2>/', methods=['GET'])
 def category(categorylevel1=None, categorylevel2=None):
+
     try:
         #print("category")
+        cached = cache(request.url)
+        if cached:
+            return Response(json.dumps(cached), status = 200, mimetype='application/json')
     
         category_controller_obj =  category_controller.Category_Controller()
         if categorylevel1 is None:
@@ -95,6 +115,7 @@ def category(categorylevel1=None, categorylevel2=None):
             result = category_controller_obj.get_category2(request_params = request.args, catlevel1Name=categorylevel1, catlevel2Name=categorylevel2)
 
         if result:
+            cache(request.url, result, ttl = 3600)
             return Response(json.dumps(result), status = 200, mimetype='application/json')
         
         else:
