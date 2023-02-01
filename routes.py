@@ -25,7 +25,7 @@ def insert():
         database_model_obj = database_model.Database_Model()
         if database_model_obj.validate_data(json_data):
             try:
-                #print("here")
+
                 database_model_obj.start_session()
                 database_model_obj.insert_data(json_data)
                 database_model_obj.commit()
@@ -133,7 +133,6 @@ def search():
 @app.route('/product/<product_id>', methods=['GET'])
 def product(product_id):
     try:
-        #print("product")
         product_controller_obj =  product_controller.Product_Controller()
         result = product_controller_obj.get_product(product_id)
         if result:

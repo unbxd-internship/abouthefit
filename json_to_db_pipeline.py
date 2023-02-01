@@ -22,6 +22,23 @@ class ingest():
             return False
         return True
     
+    def fix_data(self, data):
+        if 'sku' not in data:
+            return False
+        if 'title' not in data:
+            data['title'] = ''
+        if 'productDescription' not in data:
+            data['productDescription'] = ''
+        if 'price' not in data:
+            data['price'] = ''
+        if 'productImage' not in data:
+            data['productImage'] = ''
+        if 'catlevel1Name' not in data:
+            data['catlevel1Name'] = ''
+        if 'catlevel2Name' not in data:
+            data['catlevel2Name'] = ''
+        return data
+    
     def into_db(self):
 
         self.Database_Model.delete_table()
@@ -31,13 +48,23 @@ class ingest():
         self.Database_Model.start_session()
 
         catalog = json.load(open(self.json_path))
-
+        count = 0
         for i in catalog:
             try:
                 if self.validate_data(i):
                     r = requests.post('http://127.0.0.1:5000/insert', json=i)
-                    print(f"Status Code: {r.status_code}, Response: {r.json()}")
-
+                    if r.status_code != 200:
+                        print("AHHHHH")
+                    #print(f"Status Code: {r.status_code}, Response: {r.json()}")
+                else:
+                    fixed_i = self.fix_data(i)
+                    count+=1
+                    if fixed_i:
+                        #print("missed parameters",count)
+                        r = requests.post('http://127.0.0.1:5000/insert', json=fixed_i)
+                        if r.status_code != 200:
+                            print("AHHHHH")
+                        #print(f"Status Code: {r.status_code}, Response: {r.json()}")
             except:
                 print("AHHHHH")
                 

@@ -1,4 +1,4 @@
-from table import Base, Product
+from table import Base, Product, Category
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -27,8 +27,11 @@ class Database_Model:
 
     def insert_data(self, data):
         if self.validate_data(data):
-            data = {'sku': data['sku'], 'title': data['title'], 'productdescription': data['productDescription'], 'price': data['price'], 'productimage': data['productImage'], 'catlevel1name': data['catlevel1Name'], 'catlevel2name': data['catlevel2Name']}
-            self.s.add(Product(**data))
+            data_product = {'sku': data['sku'], 'title': data['title'], 'productdescription': data['productDescription'], 'price': data['price'], 'productimage': data['productImage'], 'cat_id': data['catlevel1Name'] + data['catlevel2Name']}
+            self.s.add(Product(**data_product))
+            data_category = {'cat_id': data['catlevel1Name'] + data['catlevel2Name'], 'catlevel1name': data['catlevel1Name'], 'catlevel2name': data['catlevel2Name']}
+            if self.s.query(Category).filter_by(cat_id = data_category['cat_id']).first() == None:
+                self.s.add(Category(**data_category))
             #self.commit()
             return True
         return False
