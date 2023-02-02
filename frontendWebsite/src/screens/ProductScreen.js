@@ -1,17 +1,32 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import products from '../products';
 import { useParams } from 'react-router-dom'
 import props from 'prop-types'
+import { client } from '../utils/axios.util';
 
-function ProductScreen({match}) {
-    
-    const temp = useParams();
-    
+function ProductScreen() {
 
-    
-    const findproduct=products.find((p)=>p.sku===temp.sku)
+    const [product, setProduct] = useState([]);
+    const [id, setId]=useState("");
+
+    useEffect(() => {
+        let endpoint = '/'
+        const url = new URLSearchParams(window.location.search)
+        const path = window.location.pathname.split('/');
+        console.log(path)
+        setId(path[2]);
+        console.log("in product screen")
+        console.log("id=", id)
+        endpoint = `/product/${id}`
+        client.get(endpoint).then((res) => {
+        setProduct(res.data);
+        }).catch(err => { console.log(err); })
+      }, [])
+
+
+    console.log(product)
     
     
     return (
@@ -21,18 +36,18 @@ function ProductScreen({match}) {
             
             <Row>
                 <Col md={6}>    
-                    <Image src={findproduct.productImage} alt={findproduct.title} fluid />
+                    <Image src={product.productimage} alt={product.title} fluid />
                 </Col>
                 <Col md={3}>
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <h3>{findproduct.title}</h3>
+                            <h3>{product.title}</h3>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            Price: $ {findproduct.price}
+                            Price: $ {product.price}
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            Description: {findproduct.productDescription}
+                            Description: {product.productdescription}
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
