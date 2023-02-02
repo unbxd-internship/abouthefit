@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from table import Product, Base
+from models.table_model import Product, Base
 import json
 import requests
 import math

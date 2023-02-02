@@ -1,4 +1,4 @@
-from table import Base, Product, Category
+from models.table_model import Base, Product, Category
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 

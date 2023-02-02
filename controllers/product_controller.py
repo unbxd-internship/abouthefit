@@ -1,7 +1,7 @@
-import product_model
-from database_model import Database_Model
+import models.product_model as product_model
+from models.database_model import Database_Model
 from flask import Flask, request, Response
-from table import Product, Base
+from models.table_model import Product, Base
 import json
 import requests
 import math

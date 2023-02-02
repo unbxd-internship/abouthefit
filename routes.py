@@ -1,14 +1,14 @@
-from table import Product
+from models.table_model import Product
 import json
 from flask import Flask, request, Response
 from flask_cors import CORS
 import requests
 import math
-import category_controller
-import search_controller
-import product_controller
-import json_to_db_pipeline
-import database_model
+import controllers.category_controller as category_controller
+import controllers.search_controller as search_controller
+import controllers.product_controller as product_controller
+import controllers.json_to_db_pipeline as json_to_db_pipeline
+import models.database_model as database_model
 import redis
 import pickle
 # from category_controller import Category_Controller as category_controller

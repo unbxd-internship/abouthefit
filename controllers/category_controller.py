@@ -1,9 +1,9 @@
 from flask import Flask, request, Response
-from table import Product, Base, Category
+from models.table_model import Product, Base, Category
 import json
 import requests
 import math
-import category_model
+import models.category_model as category_model
 
 class Category_Controller:
 

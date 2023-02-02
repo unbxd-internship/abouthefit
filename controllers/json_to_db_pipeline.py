@@ -1,6 +1,6 @@
 import json
 import requests
-from database_model import Database_Model
+from models.database_model import Database_Model
 
 class ingest():
 
