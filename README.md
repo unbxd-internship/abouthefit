@@ -29,7 +29,7 @@ Content_length: __Size of json file__
 ## 2. Category API -
 This is a GET request. The API retrieves category name(s) from the URL path. The parameters of the request contains sort option and page number. The response contains the first 10 json objects of the products that satisfy the conditions specified. It also contains the page number, number of pages, number of products.
 
-GET /category/<catlevel1Name>/<catlevel2Name>/?sort=* &page=* HTTP/1.1
+GET /category/(catlevel1Name)/(catlevel2Name)/?sort=* &page=* HTTP/1.1
 HOST: aboutthefit
 
 ## 3. Search API -
@@ -41,7 +41,7 @@ HOST: aboutthefit
 ## 4. Product API -
 This is a GET request. The API retrieves "sku" from the URL path. There are no additional parameters. The response object contains the json object of the product matching the given sku.
 
-GET /product/<sku> HTTP/1.1
+GET /product/(sku) HTTP/1.1
 HOST: aboutthefit
 
 ## Link to Postman collection -
