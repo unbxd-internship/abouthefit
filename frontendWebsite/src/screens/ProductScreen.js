@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
-import products from '../products';
+//  import products from '../products';
 import { useParams } from 'react-router-dom'
 import props from 'prop-types'
 import { client } from '../utils/axios.util';
@@ -21,11 +21,12 @@ function ProductScreen() {
         console.log("id=", id)
         endpoint = `/product/${id}`
         client.get(endpoint).then((res) => {
-        setProduct(res.data);
+            console.log("data")
+            console.log(res.data)
+            setProduct(res.data);
         }).catch(err => { console.log(err); })
-      }, [])
-
-
+      }, [id])
+    console.log("product")
     console.log(product)
     
     
