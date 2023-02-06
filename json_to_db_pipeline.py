@@ -1,5 +1,6 @@
 import json
 import requests
+import sys
 from models.database_model import Database_Model
 
 class ingest():
@@ -49,19 +50,20 @@ class ingest():
 
         catalog = json.load(open(self.json_path))
         count = 0
+        print("here")
         for i in catalog:
             try:
                 if self.validate_data(i):
-                    r = requests.post('http://127.0.0.1:5000/insert', json=i)
+                    r = requests.post('http://0.0.0.0:5000/insert', json=i)
                     print(f"Status Code: {r.status_code}, Response: {r.json()}")
                 else:
                     fixed_i = self.fix_data(i)
                     count+=1
                     if fixed_i:
-                        r = requests.post('http://127.0.0.1:5000/insert', json=fixed_i)
+                        r = requests.post('http://0.0.0.0:5000/insert', json=fixed_i)
                         print(f"Status Code: {r.status_code}, Response: {r.json()}")
-            except:
-                print("Error Loading Data")
+            except Exception as e:
+                print("Error Loading Data", e)
                 
         self.Database_Model.commit()
         self.Database_Model.close_session()

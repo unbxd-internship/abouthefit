@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 class Database_Model:
 
     def __init__(self):
-        self.db_string = "postgresql://unbxd:myPassword@localhost:5432/catalog"
+        self.db_string = "postgresql://unbxd:myPassword@catalog-database:5432/catalog"
         self.db = create_engine(self.db_string)
         self.Session = sessionmaker(bind=self.db)
 
@@ -27,12 +27,14 @@ class Database_Model:
 
     def insert_data(self, data):
         if self.validate_data(data):
+            self.start_session()
             data_product = {'sku': data['sku'], 'title': data['title'], 'productdescription': data['productDescription'], 'price': data['price'], 'productimage': data['productImage'], 'cat_id': data['catlevel1Name'] + data['catlevel2Name']}
             self.s.add(Product(**data_product))
             data_category = {'cat_id': data['catlevel1Name'] + data['catlevel2Name'], 'catlevel1name': data['catlevel1Name'], 'catlevel2name': data['catlevel2Name']}
             if self.s.query(Category).filter_by(cat_id = data_category['cat_id']).first() == None:
                 self.s.add(Category(**data_category))
-            #self.commit()
+            self.commit()
+            self.close_session()
             return True
         return False
     

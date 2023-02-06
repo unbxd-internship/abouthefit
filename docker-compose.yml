@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    container_name: aboutthefit
+    build: .
+    ports:
+      - "5000:5000"
+
+  database:
+    image: postgres:11
+    container_name: catalog-database
+    environment:
+      - POSTGRES_USER=unbxd
+      - POSTGRES_PASSWORD=myPassword
+      - POSTGRES_DB=catalog
+    ports: 
+      - "5432:5432"
+
+  redis:
+    image: redis:6.0
+    container_name: redis-server
+    ports:
+      - "6379:6379"

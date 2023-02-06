@@ -7,7 +7,7 @@ import math
 import controllers.category_controller as category_controller
 import controllers.search_controller as search_controller
 import controllers.product_controller as product_controller
-import controllers.json_to_db_pipeline as json_to_db_pipeline
+import json_to_db_pipeline as json_to_db_pipeline
 import models.database_model as database_model
 import redis
 import pickle
@@ -17,7 +17,7 @@ import pickle
 
 app = Flask(__name__)
 CORS(app)
-redis_cache = redis.Redis(host='localhost', port=6379, db=0)
+redis_cache = redis.Redis(host='redis-server', port=6379, db=0)
 
 def cache(key, value= None, ttl= None):
     if value:
@@ -31,17 +31,19 @@ def cache(key, value= None, ttl= None):
             return pickle.loads(value)
         else:
             return None
+
+@app.route('/check', methods=['GET'])
+def check():
+    return Response(json.dumps({
+        'status': 'on docker'
+    }), status=200, mimetype='application/json')
         
 @app.route('/insert', methods=['POST'])
 def insert():
-    #print("insert")
     if request.json:
         json_data = request.json
-        #print(json_data)
-        database_model_obj = database_model.Database_Model()
         if database_model_obj.validate_data(json_data):
             try:
-
                 database_model_obj.start_session()
                 database_model_obj.insert_data(json_data)
                 database_model_obj.commit()
@@ -70,9 +72,6 @@ def insert():
 @app.route('/get_category', methods=['GET'])
 def get_category():
     try:
-        #print("get_category")
-        category_controller_obj =  category_controller.Category_Controller()
-
         cat_headers, sub_cats = category_controller_obj.get_category()
 
         if cat_headers and sub_cats:
@@ -101,12 +100,9 @@ def get_category():
 def category(categorylevel1=None, categorylevel2=None):
 
     try:
-        #print("category")
         cached = cache(request.url)
         if cached:
             return Response(json.dumps(cached), status = 200, mimetype='application/json')
-    
-        category_controller_obj =  category_controller.Category_Controller()
         if categorylevel1 is None:
             result = category_controller_obj.get_all(request_params = request.args)
         elif categorylevel2 is None:
@@ -133,8 +129,6 @@ def category(categorylevel1=None, categorylevel2=None):
 @app.route('/search', methods=['GET'])
 def search():
     try:
-        #print("search")
-        search_controller_obj =  search_controller.Search_Controller()
         result = search_controller_obj.get_search(request.args)
         if result:
             return Response(json.dumps(result), status = 200, mimetype='application/json')
@@ -154,7 +148,6 @@ def search():
 @app.route('/product/<product_id>', methods=['GET'])
 def product(product_id):
     try:
-        product_controller_obj =  product_controller.Product_Controller()
         result = product_controller_obj.get_product(product_id)
         if result:
             return Response(json.dumps(result), status = 200, mimetype='application/json')
@@ -172,4 +165,8 @@ def product(product_id):
         }), status=500, mimetype='application/json')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    database_model_obj = database_model.Database_Model()
+    search_controller_obj =  search_controller.Search_Controller()
+    category_controller_obj =  category_controller.Category_Controller()
+    product_controller_obj =  product_controller.Product_Controller()
+    app.run('0.0.0.0',debug=True)
