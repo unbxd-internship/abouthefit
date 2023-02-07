@@ -9,7 +9,7 @@ function CategoryDropdown(){
     const [catLevelNames, setCatLevelNames] = useState({});
     const [products, setProducts]= useState('');
     const [error, setError] = useState('');
-    const history = useHistory();
+    const history = useHistory(); 
 
     
     useEffect(() => {
