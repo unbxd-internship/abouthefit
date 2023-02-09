@@ -1,14 +1,16 @@
     import React from 'react'
     import { Card } from 'react-bootstrap'
-    import { Link } from 'react-router-dom'
+    import { Link, useHistory } from 'react-router-dom'
 
     function Product({product}) {
+
+        const history=useHistory();
     return (
         <Card className=" my-3 p-3 rounded">
-            <Link to={`/product/${product.sku}`}>
+           
+            <Link to={`/product/${product.sku}` }>
                 <Card.Img src= {product.productimage} />
             </Link>
-
             <Card.Body>
                 <Link to={`/product/${product.sku}`}>
                     <Card.Title as="div"> 

@@ -20,19 +20,24 @@ function HomeScreen() {
   const [pageNumber, setPageNumber]=useState(0);
   
     useEffect(() => {
+      console.log(endpoint)
       client
       .get(endpoint)
       .then((res) => {
+        console.log(res.data)
+        console.log(endpoint)
         setProducts(res.data.products);
         setPageNumber(res.data.PageNumber);
         setTotalPages(res.data.TotalNumberOfPages);
+        console.log(endpoint)
         //setProductsCount(res.data.ProductCount);
         
       })
       .catch((err) => {
         console.log(err);
       });
-    }, [endpoint]);
+    }, []);
+    console.log(endpoint)
 
 
     const handleMenuOne = () => {

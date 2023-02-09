@@ -10,7 +10,8 @@ function ProductScreen() {
 
     const [product, setProduct] = useState([]);
     const [id, setId]=useState("");
-    const refresh = () => window.location.reload(true);
+    
+    
 
     useEffect(() => {
         let endpoint = '/'
@@ -21,17 +22,14 @@ function ProductScreen() {
         console.log("in product screen")
         console.log("id=", id)
         endpoint = `/product/${id}`
+        
         client.get(endpoint).then((res) => {
             console.log("data")
             console.log(res.data)
             setProduct(res.data);
-            refresh();
         }).catch(err => { console.log(err); })
       }, [id])
-    console.log("product")
-    console.log(product)
-    
-    
+      
     return (
         
         <div>
