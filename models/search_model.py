@@ -12,7 +12,7 @@ class Search_Model:
         if 'q' in request_params:
             return True
         return False
-    
+
     def sort_by(self, request_params):
         if 'sort' in request_params:
             sort = request_params['sort']
@@ -29,7 +29,7 @@ class Search_Model:
         start_param = (page-1)*10
         self.link = self.link + "&start="+ str(start_param)+ "&rows=10"
         return page
-    
+
     def validate_data(self, data):
         if not (
                 'sku' in data and
@@ -44,16 +44,16 @@ class Search_Model:
         return True
 
     def format_response(self, response, page):
-        result = {'products':[]}
+        result = []
         for i in response['products']:
             if Search_Model.validate_data(self, data = i):
-                result['products'].append({'sku': i['sku'], 'title': i['title'], 'productdescription': i['productDescription'], 'price': i['price'], 'productimage': i['productImage'], 'catlevel1name': i['catlevel1Name'], 'catlevel2name': i['catlevel2Name']})
+                result.append({'sku': i['sku'], 'title': i['title'], 'productdescription': i['productDescription'], 'price': i['price'], 'productimage': i['productImage'], 'catlevel1name': i['catlevel1Name'], 'catlevel2name': i['catlevel2Name']})
         count = response['numberOfProducts']
         numberOfPages = math.ceil(count/10)
         final_result = {'TotalNumberOfPages': numberOfPages, 'ProductCount': count , 'PageNumber': page,  'products':result}
         return final_result
-    
-    
 
-        
+
+
+
 

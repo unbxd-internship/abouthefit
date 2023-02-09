@@ -14,15 +14,16 @@ class Category_Controller:
     def get_category(self):
         catlevels = {}
         for i in self.s.query(Product.cat_id.distinct()).all():
+            print(i)
             catlevel1name, catlevel2name = self.s.query(Category.catlevel1name, Category.catlevel2name).filter(Category.cat_id == i[0]).first()
             if catlevel1name not in catlevels:
-                catlevels[catlevel1name] = []
+                catlevels[catlevel1name] = ["NA"]
             else:
                 if catlevel2name not in catlevels[catlevel1name]:
                     catlevels[catlevel1name].append(catlevel2name)
         self.category_model.database_model.close_session()
         return(list(catlevels.keys()),catlevels)
-        
+
     def get_all(self, request_params):
         query = self.s.query(Product)
         query = self.category_model.sort_by(request_params, query)
@@ -40,7 +41,7 @@ class Category_Controller:
         query = self.s.query(Product)
         query = query.filter(Product.cat_id.in_(cat_query))
         query = self.category_model.sort_by(request_params, query)
-        start, end, page = self.category_model.get_page(request_params)  
+        start, end, page = self.category_model.get_page(request_params)
         query_result = self.category_model.database_model.execute_query(query, start, end)
         count = self.category_model.database_model.get_count(query)
         final_result = self.category_model.format_response(query_result, count, page)
@@ -55,7 +56,7 @@ class Category_Controller:
         query = self.s.query(Product)
         query = query.filter(Product.cat_id.in_(cat_query))
         query = self.category_model.sort_by(request_params, query)
-        start, end, page = self.category_model.get_page(request_params)  
+        start, end, page = self.category_model.get_page(request_params)
         query_result = self.category_model.database_model.execute_query(query, start, end)
         count = self.category_model.database_model.get_count(query)
         final_result = self.category_model.format_response(query_result, count, page)

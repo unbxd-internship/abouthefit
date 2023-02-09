@@ -10,7 +10,6 @@ from models import database_model
 app = Flask(__name__)
 database_model_obj = database_model.Database_Model()
 product_controller_obj = product_controller.Product_Controller()
-search_controller_obj = search_controller.Search_Controller()
 category_controller_obj =  category_controller.Category_Controller()
 CORS(app)
 redis_cache = redis.Redis(host='redis', port=6379, db=0)
@@ -135,6 +134,7 @@ def category(categorylevel1=None, categorylevel2=None):
 @app.route('/search', methods=['GET'])
 def search():
     '''Get product details based on search query'''
+    search_controller_obj = search_controller.Search_Controller()
     try:
         result = search_controller_obj.get_search(request.args)
         if result:

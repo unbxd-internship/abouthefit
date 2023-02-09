@@ -27,17 +27,17 @@ class ingest():
         if 'sku' not in data:
             return False
         if 'title' not in data:
-            data['title'] = ''
+            data['title'] = "NA"
         if 'productDescription' not in data:
-            data['productDescription'] = ''
+            data['productDescription'] = "NA"
         if 'price' not in data:
-            data['price'] = ''
+            data['price'] = 0
         if 'productImage' not in data:
-            data['productImage'] = ''
+            data['productImage'] = "NA"
         if 'catlevel1Name' not in data:
-            data['catlevel1Name'] = ''
+            data['catlevel1Name'] = 'NA'
         if 'catlevel2Name' not in data:
-            data['catlevel2Name'] = ''
+            data['catlevel2Name'] = 'NA'
         return data
 
     def into_db(self):
