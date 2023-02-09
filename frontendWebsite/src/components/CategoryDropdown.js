@@ -10,6 +10,7 @@ function CategoryDropdown(){
     const [products, setProducts]= useState('');
     const [error, setError] = useState('');
     const history = useHistory(); 
+    const refresh = () => window.location.reload(true);
 
     
     useEffect(() => {
@@ -27,6 +28,7 @@ function CategoryDropdown(){
     const handleClick = (catlevel1, catlevel2) => {
         console.log(catlevel1, catlevel2)
         history.push(`/category/${catlevel1}/${catlevel2}`);
+        refresh();
     }
   
     const render = () => {

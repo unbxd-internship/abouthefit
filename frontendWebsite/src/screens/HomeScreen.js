@@ -11,14 +11,14 @@ import { useHistory, useLocation } from 'react-router-dom'
 function HomeScreen() {
   const [products, setProducts] = useState([]);
   const { pathname, search } = useLocation();
+  
   const history=useHistory();
-  const endpoint=pathname+search;
-  //const [endpoint, setEndpoint] = useState(pathname + search);
+  //const endpoint=pathname+search;
+  const [endpoint, setEndpoint] = useState(pathname + search);
   //const [productsCount, setProductsCount]=useState(0);
-  const [totalPages, setTotalPages]=useState(0);
-  console.log("re-render", endpoint)
+  const [totalPages, setTotalPages]=useState(0);  
   const [pageNumber, setPageNumber]=useState(0);
-    
+  
     useEffect(() => {
       client
       .get(endpoint)
@@ -26,42 +26,54 @@ function HomeScreen() {
         setProducts(res.data.products);
         setPageNumber(res.data.PageNumber);
         setTotalPages(res.data.TotalNumberOfPages);
-        
         //setProductsCount(res.data.ProductCount);
+        
       })
       .catch((err) => {
         console.log(err);
       });
-    }, []);
+    }, [endpoint]);
 
-    const setCurrentpageNo=({selected}) =>{
-      setPageNumber(selected)
-      console.log("set current page number");
-      console.log(pageNumber);
-      handlePageClick(pageNumber)
-      };
 
     const handleMenuOne = () => {
-      //setEndpoint(`${pathname}`)
+      setEndpoint(`${pathname}`)
       history.push(`${pathname}`)
     }
 
     const handleMenuTwo = () => {
-      //setEndpoint(`${pathname}?sort=price asce`)
-      history.push(`${pathname}?sort=price asce`)
+      const urlWithParams = new URL(window.location.href);
+      if (urlWithParams.searchParams.has('q')){
+        const query=urlWithParams.searchParams.get('q');
+        setEndpoint(`${pathname}?q=${query}?sort=price asce`);
+        history.push(`${pathname}?q=${query}?sort=price asce`);
+      }
+      else{
+        setEndpoint(`${pathname}?sort=price asce`)
+        console.log(endpoint)
+        history.push(`${pathname}?sort=price asce`)
+      }
     }
 
     const handleMenuThree = () => {
-      //setEndpoint(`${pathname}?sort=price desc`)
-      history.push(`${pathname}?sort=price desc`)
+      const urlWithParams = new URL(window.location.href);
+      if (urlWithParams.searchParams.has('q')){
+        const query=urlWithParams.searchParams.get('q');
+        setEndpoint(`${pathname}?q=${query}?sort=price desc`);
+        history.push(`${pathname}?q=${query}?sort=price desc`);
+      }
+      else{
+        setEndpoint(`${pathname}?sort=price desc`)
+        console.log(endpoint)
+        history.push(`${pathname}?sort=price desc`)
+      }
     }
 
     const handlePageClick = (page) => {
       const urlWithParams = new URL(window.location.href);
       urlWithParams.searchParams.set("page", page);
       const { pathname, search } = urlWithParams;
-      console.log(pathname+search);
       history.push(pathname + search);
+      setEndpoint(pathname+search);
       
     };
     const handlePrevClick = () => {
@@ -72,26 +84,13 @@ function HomeScreen() {
       handlePageClick(pageNumber + 1);
     };
 
-      const showLeftButton = () => {
-      if(pageNumber > 1) {
-      return (
-      <button onClick={() => setCurrentpageNo({selected: pageNumber-1})}>
-      {"<"}
-      </button>
-      );
-      }
-      };
-      
-      const showRightButton = () => {
-      if(pageNumber < totalPages) {
-      return (
-      <button onClick={() => setCurrentpageNo({selected: pageNumber+1})}>
-      {">"}
-      </button>
-      );
-      }
+    const handleFirstPage = () => {
+      handlePageClick(1);
     };
-  
+
+    const handleLastPage = () => {
+      handlePageClick(totalPages);
+    };
 
     return (
       <div>
@@ -113,13 +112,28 @@ function HomeScreen() {
           </Row>
         </div>
         <div className="d-flex justify-content-center mt-5">
+          <h5>
+            Page {pageNumber} of {totalPages}
+          </h5>
+        </div>
+        <div className="d-flex justify-content-center mt-3">
           <nav aria-label="Page navigation example">
             <ul className="pagination">
+            {pageNumber > 1 && (
+                <li className="page-item">
+                  <button
+                    className="page-link"
+                    onClick={() => handleFirstPage()}
+                  >
+                    1
+                  </button>
+                </li>
+              )}
               {pageNumber > 1 && (
                 <li className="page-item">
                   <button
                     className="page-link"
-                    onClick={() => setCurrentpageNo({ selected: pageNumber - 1 })}
+                    onClick={() => handlePrevClick()}
                   >
                     Previous Page
                   </button>
@@ -130,10 +144,22 @@ function HomeScreen() {
                 <li className="page-item">
                   <button
                     className="page-link"
-                    onClick={() => setCurrentpageNo({ selected: pageNumber + 1 })}
+                    onClick={() => handleNextClick()}
                   >
                     Next Page
                   </button>
+                
+                </li>
+              )}
+               {pageNumber < totalPages && (
+                <li className="page-item">
+                  <button
+                    className="page-link"
+                    onClick={() => handleLastPage()}
+                  >
+                    {totalPages}
+                  </button>
+                
                 </li>
               )}
             </ul>

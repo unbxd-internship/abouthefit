@@ -7,11 +7,13 @@ function SearchBox(props) {
     // const {onSearch} = props
     let history = useHistory()
     // const navigate = useNavigate();
+    const refresh = () => window.location.reload(true);
 
     const submitHandler = (e) => {
         e.preventDefault()
         if (query) {
             history.push(`/search?q=${query}`)
+            refresh();
             // navigate(`/search?q=${query}`)
         } 
         // else {
