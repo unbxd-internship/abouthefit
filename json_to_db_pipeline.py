@@ -9,7 +9,7 @@ class ingest():
         self.json_path = json_path
         self.Database_Model = Database_Model()
 
-    
+
     def validate_data(self, data):
         if not (
                 'sku' in data and
@@ -22,7 +22,7 @@ class ingest():
         ):
             return False
         return True
-    
+
     def fix_data(self, data):
         if 'sku' not in data:
             return False
@@ -39,7 +39,7 @@ class ingest():
         if 'catlevel2Name' not in data:
             data['catlevel2Name'] = ''
         return data
-    
+
     def into_db(self):
 
         self.Database_Model.delete_table()
@@ -64,7 +64,7 @@ class ingest():
                         print(f"Status Code: {r.status_code}, Response: {r.json()}")
             except Exception as e:
                 print("Error Loading Data", e)
-                
+
         self.Database_Model.commit()
         self.Database_Model.close_session()
 

@@ -37,7 +37,7 @@ class Database_Model:
             self.close_session()
             return True
         return False
-    
+
     def delete_table(self):
         Base.metadata.drop_all(self.db)
 
@@ -51,7 +51,7 @@ class Database_Model:
     def get_count(self, query):
         count = query.count()
         return count
-    
+
     def commit(self):
         self.s.commit()
 
@@ -62,4 +62,3 @@ class Database_Model:
     def close_session(self):
         self.s.close()
 
-    
