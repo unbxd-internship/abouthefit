@@ -1,6 +1,8 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
+//to add footer to all screens
+
 function Footer() {
   return (
     <footer>

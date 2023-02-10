@@ -2,18 +2,19 @@ import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
+//to display a searchbox in the header, handle 
+//queries sent in the form and push to new url endpoint
+
 function SearchBox(props) {
-    const [query, setQuery] = useState('')
+    const [query, setQuery] = useState('') //state variable to get query from searchbox
     let history = useHistory()
     const refresh = () => window.location.reload(true);
 
-    const submitHandler = (e) => {
+    const submitHandler = (e) => { //search form handler to get query from form and push endpoint
         e.preventDefault()
         if (query) {
-            console.log("hi")
-            console.log(query)
             history.push(`/search?q=${query}`)
-            
+            refresh();
         } 
     }
     return (

@@ -1,18 +1,26 @@
-    import React from 'react'
-    import { Card } from 'react-bootstrap'
-    import { Link, useHistory } from 'react-router-dom'
+import React from 'react'
+import { Card } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
-    function Product({product}) {
 
-        const history=useHistory();
+//to load products onto display in cards
+
+function Product({product}) {
+
+    const productClicked=[];
     return (
         <Card className=" my-3 p-3 rounded">
-           
-            <Link to={`/product/${product.sku}` }>
+            <Link to={{
+                pathname: `/product/${product.sku}`,
+                state: { productClicked: product}
+            }}>
                 <Card.Img src= {product.productimage} />
             </Link>
             <Card.Body>
-                <Link to={`/product/${product.sku}`}>
+                <Link to={{
+                    pathname: `/product/${product.sku}`,
+                    state: { productClicked: product}
+                }}>
                     <Card.Title as="div"> 
                         <strong> {product.title}</strong>
                     </Card.Title>
@@ -20,16 +28,6 @@
                 <Card.Text as="h3">
                         $ {product.price}
                 </Card.Text> 
-                
-                {/*<Card.Text>
-                    <div className="my-3">
-                        {product.rating} from {product.numReviews}
-                    </div>
-                </Card.Text>
-                
-                <Card.Text as="h3">
-                    {product.sku}
-                </Card.Text> */}
 
             </Card.Body>
         

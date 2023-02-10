@@ -2,39 +2,39 @@ import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 //  import products from '../products';
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import props from 'prop-types'
 import { client } from '../utils/axios.util';
+
+//to load product screen on click of any product 
 
 function ProductScreen() {
 
     const [product, setProduct] = useState([]);
-    const [id, setId]=useState("");
-    
-    
+    const [id, setId]=useState(""); //to store sku of product to be loaded in product screen
+    const location= useLocation();
+    const {productClicked}=location.state;
+ 
 
     useEffect(() => {
         let endpoint = '/'
         const url = new URLSearchParams(window.location.search)
         const path = window.location.pathname.split('/');
-        console.log(path)
         setId(path[2]);
-        console.log("in product screen")
-        console.log("id=", id)
         endpoint = `/product/${id}`
         
         client.get(endpoint).then((res) => {
-            console.log("data")
-            console.log(res.data)
             setProduct(res.data);
-        }).catch(err => { console.log(err); })
+        }).catch(err => { 
+            console.log(err); 
+            setProduct(productClicked)
+        })
       }, [id])
+   
       
     return (
         
-        <div>
-            <Link to='/' className='btn btn-light my-3'>Go Back</Link>
-            
+        <div>  
             <Row>
                 <Col md={6}>    
                     <Image src={product.productimage} alt={product.title} fluid />
@@ -56,6 +56,7 @@ function ProductScreen() {
             </Row>
     </div>
     )
+   
 }
 
 export default ProductScreen

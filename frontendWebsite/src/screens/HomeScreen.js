@@ -5,96 +5,89 @@ import Product from '../components/Product';
 import CategoryDropdown from '../components/CategoryDropdown'
 import { useHistory, useLocation } from 'react-router-dom'
 
-//import products from '../products'
-
+//Main screen with products. All functionalities: search, category filters,
+//sort and pagination reload this page with updated url and API calls
+//10 products displayed on a single page
 
 function HomeScreen() {
-  const [products, setProducts] = useState([]);
-  const { pathname, search } = useLocation();
-  
+  const [products, setProducts] = useState([]); //state variable to store array of products
+  const { pathname, search } = useLocation(); 
+  const refresh = () => window.location.reload(true); //function to reload window
   const history=useHistory();
-  //const endpoint=pathname+search;
   const [endpoint, setEndpoint] = useState(pathname + search);
-  //const [productsCount, setProductsCount]=useState(0);
-  const [totalPages, setTotalPages]=useState(0);  
+  const [totalPages, setTotalPages]=useState(0);  //state variable to store total number of pages 
   const [pageNumber, setPageNumber]=useState(0);
   
     useEffect(() => {
-      console.log(endpoint)
       client
-      .get(endpoint)
+      .get(endpoint) //call to API with current url endpoint
       .then((res) => {
-        console.log(res.data)
-        console.log(endpoint)
         setProducts(res.data.products);
         setPageNumber(res.data.PageNumber);
         setTotalPages(res.data.TotalNumberOfPages);
-        console.log(endpoint)
-        //setProductsCount(res.data.ProductCount);
         
       })
       .catch((err) => {
         console.log(err);
       });
-    }, []);
-    console.log(endpoint)
+    }, [endpoint]);
+   
 
 
     const handleMenuOne = () => {
-      setEndpoint(`${pathname}`)
+      setEndpoint(`${pathname}`)// handle sort by relevance
       history.push(`${pathname}`)
     }
 
     const handleMenuTwo = () => {
       const urlWithParams = new URL(window.location.href);
       if (urlWithParams.searchParams.has('q')){
-        const query=urlWithParams.searchParams.get('q');
-        setEndpoint(`${pathname}?q=${query}?sort=price asce`);
-        history.push(`${pathname}?q=${query}?sort=price asce`);
+        const query=urlWithParams.searchParams.get('q'); // handle sort by price low to high
+        setEndpoint(`${pathname}?q=${query}&sort=price asce`);
+        history.push(`${pathname}?q=${query}&sort=price asce`);
       }
       else{
         setEndpoint(`${pathname}?sort=price asce`)
-        console.log(endpoint)
         history.push(`${pathname}?sort=price asce`)
       }
     }
 
     const handleMenuThree = () => {
-      const urlWithParams = new URL(window.location.href);
+      const urlWithParams = new URL(window.location.href); //handle sort by price high to low
       if (urlWithParams.searchParams.has('q')){
         const query=urlWithParams.searchParams.get('q');
-        setEndpoint(`${pathname}?q=${query}?sort=price desc`);
-        history.push(`${pathname}?q=${query}?sort=price desc`);
+        setEndpoint(`${pathname}?q=${query}&sort=price desc`);
+        history.push(`${pathname}?q=${query}&sort=price desc`);
       }
       else{
         setEndpoint(`${pathname}?sort=price desc`)
-        console.log(endpoint)
         history.push(`${pathname}?sort=price desc`)
       }
     }
 
     const handlePageClick = (page) => {
-      const urlWithParams = new URL(window.location.href);
+      const urlWithParams = new URL(window.location.href); //handle change in page in pagination
       urlWithParams.searchParams.set("page", page);
       const { pathname, search } = urlWithParams;
       history.push(pathname + search);
       setEndpoint(pathname+search);
+      refresh();
       
     };
     const handlePrevClick = () => {
-      handlePageClick(pageNumber - 1);
+      handlePageClick(pageNumber - 1); //to handle previous page click
     };
 
     const handleNextClick = () => {
-      handlePageClick(pageNumber + 1);
+      handlePageClick(pageNumber + 1); //to handle next page click
     };
 
     const handleFirstPage = () => {
-      handlePageClick(1);
+      handlePageClick(1); //to go to first page
     };
 
     const handleLastPage = () => {
-      handlePageClick(totalPages);
+      handlePageClick(totalPages); //to go to last page
     };
 
     return (
