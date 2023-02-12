@@ -6,6 +6,7 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 from controllers import category_controller, search_controller, product_controller
 from models import database_model
+import requests
 
 app = Flask(__name__)
 database_model_obj = database_model.Database_Model()
@@ -104,18 +105,7 @@ def category(categorylevel1=None, categorylevel2=None):
         cached = cache(request.url)
         if cached:
             return Response(json.dumps(cached), status = 200, mimetype='application/json')
-        if categorylevel1 is None:
-            result = category_controller_obj.get_all(request_params = request.args)
-        elif categorylevel2 is None:
-            result = category_controller_obj.get_category1(
-                request_params = request.args,
-                catlevel1Name = categorylevel1)
-        else:
-            result = category_controller_obj.get_category2(
-                request_params = request.args,
-                catlevel1Name=categorylevel1,
-                catlevel2Name=categorylevel2)
-
+        result = category_controller_obj.get(catlevel1Name = categorylevel1,catlevel2Name= categorylevel2,request_params = request.args)
         if result:
             cache(request.url, result, ttl = 3600)
             return Response(json.dumps(result), status = 200, mimetype='application/json')

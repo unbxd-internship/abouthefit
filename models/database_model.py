@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 class Database_Model:
 
     def __init__(self):
-        self.db_string = "postgresql://unbxd:myPassword@catalog-database:5432/catalog"
+        self.db_string = "postgresql://unbxd:myPassword@database:5432/catalog"
         self.db = create_engine(self.db_string)
         self.Session = sessionmaker(bind=self.db)
 

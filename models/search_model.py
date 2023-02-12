@@ -52,8 +52,3 @@ class Search_Model:
         numberOfPages = math.ceil(count/10)
         final_result = {'TotalNumberOfPages': numberOfPages, 'ProductCount': count , 'PageNumber': page,  'products':result}
         return final_result
-
-
-
-
-

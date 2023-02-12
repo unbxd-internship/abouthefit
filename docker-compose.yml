@@ -2,14 +2,14 @@ version: '3'
 services:
 
   api:
-    container_name: aboutthefit
+    container_name: atf-backend
     build: .
     ports:
       - "5000:5000"
 
   database:
     image: postgres:11
-    container_name: catalog-database
+    container_name: database
     environment:
       - POSTGRES_USER=unbxd
       - POSTGRES_PASSWORD=myPassword

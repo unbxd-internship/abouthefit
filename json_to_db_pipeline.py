@@ -50,7 +50,6 @@ class ingest():
 
         catalog = json.load(open(self.json_path))
         count = 0
-        print("here")
         for i in catalog:
             try:
                 if self.validate_data(i):
