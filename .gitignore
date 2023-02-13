@@ -4,6 +4,7 @@
 # Flask instance folder
 instance/
 
+*.txt
 
 # Python cache files
 __pycache__/
