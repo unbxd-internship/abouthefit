@@ -1,0 +1,30 @@
+# Flask environment variables
+.env
+
+# Flask instance folder
+instance/
+
+*.txt
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Other Flask-related files
+*.log
+*.sqlite
+
+# Environment specific files
+*.env.*
+
+# Other common files
+.DS_Store
+.env.*.local
+npm-debug.log
+node_modules/
+
+
+
+
+

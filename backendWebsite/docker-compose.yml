@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  api:
+    container_name: atf-backend
+    build: .
+    ports:
+      - "5000:5000"
+
+  database:
+    image: postgres:11
+    container_name: database
+    environment:
+      - POSTGRES_USER=unbxd
+      - POSTGRES_PASSWORD=myPassword
+      - POSTGRES_DB=catalog
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6.0
+    container_name: redis-server
+    ports:
+      - "6379:6379"
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
