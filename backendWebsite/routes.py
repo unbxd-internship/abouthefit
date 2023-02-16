@@ -45,12 +45,18 @@ def insert():
         if database_model_obj.validate_data(json_data):
             try:
                 database_model_obj.start_session()
-                database_model_obj.insert_data(json_data)
+                res = database_model_obj.insert_data(json_data)
                 database_model_obj.commit()
                 database_model_obj.close_session()
-                return Response(json.dumps({
-                    'status': 'ok'
-                }), status=200, mimetype='application/json')
+                if res:
+                    return Response(json.dumps({
+                        'status': 'ok'
+                    }), status=200, mimetype='application/json')
+                else:
+                    return Response(json.dumps({
+                        'status': 'bad_request',
+                        'error': 'Unable to insert data'
+                    }), status=400, mimetype='application/json')
             except Exception as exc:
                 return Response(json.dumps({
                     'status': 'server_error',

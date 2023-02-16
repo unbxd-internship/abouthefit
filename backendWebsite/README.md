@@ -1,15 +1,17 @@
+![pylint workflow](https://github.com/anchh/aboutthefit/actions/workflows/pylint.yml/badge.svg)
+![pytest workflow](https://github.com/anchh/aboutthefit/actions/workflows/pytest.yml/badge.svg)
 # Summary
 
-To build an e-commerce website to facilitate the selling of apparel for a small business. 
-The website’s search will be powered by the Unbxd API and handle about 50 requests per second. 
-The website will feature various products organized by categories and subcategories to ensure that the customers are able to find the right product. 
+To build an e-commerce website to facilitate the selling of apparel for a small business.
+The website’s search will be powered by the Unbxd API and handle about 50 requests per second.
+The website will feature various products organized by categories and subcategories to ensure that the customers are able to find the right product.
 Frontend - React, Backend - Flask, Database - PostgreSQL, Redis, Hosted - Docker
 
-# API Specs 
+# API Specs
 
 The app works on 4 main APIs:
 
-## 1. Insert API - 
+## 1. Insert API -
 This is a POST request. The request sends a single JSON object in its body to be stores in the PostgreSql database.
 
 POST /insert HTTP/1.1
