@@ -12,6 +12,7 @@ class Product_Controller:
         self.product_model = product_model.Product_Model()
         self.s = self.product_model.database_model.start_session()
 
+    '''get product in the database based on the sku'''
     def get_product(self, sku):
         product = self.product_model.get_product(sku)
         if product:

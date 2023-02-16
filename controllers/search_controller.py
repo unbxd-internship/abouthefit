@@ -9,12 +9,13 @@ import models.search_model as search_model
 class Search_Controller:
     def __init__(self):
         self.search_model = search_model.Search_Model()
-        
+
+    '''Get search results based on query parameters using the Search_Model which connects to the API'''
     def get_search(self, request_params):
         if 'q' in request_params:
             query = request_params['q']
             self.search_model.link = self.search_model.link + "q=" + query
-        
+
         self.search_model.sort_by(request_params)
         page = self.search_model.get_page(request_params)
 

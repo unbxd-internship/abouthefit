@@ -4,15 +4,18 @@ import json
 import requests
 import math
 
+'''Search model - contains formatting and validation functions'''
 class Search_Model:
     def __init__(self):
         self.link = "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?"
 
+    '''Funtction to validate the search query'''
     def validate(self, request_params):
         if 'q' in request_params:
             return True
         return False
 
+    '''Function to format the search query with sort'''
     def sort_by(self, request_params):
         if 'sort' in request_params:
             sort = request_params['sort']
@@ -21,6 +24,7 @@ class Search_Model:
             elif sort == 'price desc':
                 self.link = self.link + "&sort=price desc"
 
+    '''Function to format the search query with pagination'''
     def get_page(self, request_params):
         if 'page' in request_params:
             page = int(request_params['page'])
@@ -30,6 +34,7 @@ class Search_Model:
         self.link = self.link + "&start="+ str(start_param)+ "&rows=10"
         return page
 
+    '''Function to validate the data from the response'''
     def validate_data(self, data):
         if not (
                 'sku' in data and
@@ -43,6 +48,7 @@ class Search_Model:
             return False
         return True
 
+    '''Function to format the response'''
     def format_response(self, response, page):
         result = []
         for i in response['products']:

@@ -11,6 +11,7 @@ class Product_Model:
         self.s  = self.database_model.start_session()
         self.product = Product()
 
+    '''Function to get the product details from the database'''
     def get_product(self, sku):
         #print(sku)
         query = self.s.query(Product)

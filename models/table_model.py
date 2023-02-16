@@ -4,6 +4,7 @@ import json
 
 Base = declarative_base()
 
+'''Schema for the categories table'''
 class Category(Base):
     __tablename__ = 'categories'
     catlevel1name = Column(String)
@@ -16,6 +17,7 @@ class Category(Base):
     def jsonformat(self):
         return {"catlevel1name": self.catlevel1name, "catlevel2name": self.catlevel2name, "cat_id": self.cat_id}
 
+'''Schema for the products table'''
 class Product(Base):
     __tablename__ = 'products'
     sku = Column(String, primary_key=True)

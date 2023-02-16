@@ -68,9 +68,8 @@ def insert():
         }), status=400, mimetype='application/json')
 
 
-
-@app.route('/get_category', methods=['GET'])
-def get_category():
+@app.route('/category_headers', methods=['GET'])
+def category_headers():
     '''Get the category headers and sub categories'''
     try:
         cat_headers, sub_cats = category_controller_obj.get_category()
@@ -90,6 +89,7 @@ def get_category():
             'status': 'server_error',
             'error': str(exc)
         }), status=500, mimetype='application/json')
+
 
 @app.route('/', methods=['GET'])
 @app.route('/home', methods=['GET'])
@@ -121,6 +121,7 @@ def category(categorylevel1=None, categorylevel2=None):
             'error': str(exc)
         }), status=500, mimetype='application/json')
 
+
 @app.route('/search', methods=['GET'])
 def search():
     '''Get product details based on search query'''
@@ -140,6 +141,7 @@ def search():
             'status': 'server_error',
             'error': str(exc)
         }), status=500, mimetype='application/json')
+
 
 @app.route('/product/<product_id>', methods=['GET'])
 def product(product_id):

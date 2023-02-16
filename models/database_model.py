@@ -28,9 +28,11 @@ class Database_Model:
     def insert_data(self, data):
         if self.validate_data(data):
             self.start_session()
-            data_product = {'sku': data['sku'], 'title': data['title'], 'productdescription': data['productDescription'], 'price': data['price'], 'productimage': data['productImage'], 'cat_id': data['catlevel1Name'] + data['catlevel2Name']}
+            cat_id = data['catlevel1Name'] + data['catlevel2Name']
+            cat_id = str(hash(cat_id))
+            data_product = {'sku': data['sku'], 'title': data['title'], 'productdescription': data['productDescription'], 'price': data['price'], 'productimage': data['productImage'], 'cat_id': cat_id}
             self.s.add(Product(**data_product))
-            data_category = {'cat_id': data['catlevel1Name'] + data['catlevel2Name'], 'catlevel1name': data['catlevel1Name'], 'catlevel2name': data['catlevel2Name']}
+            data_category = {'cat_id': cat_id, 'catlevel1name': data['catlevel1Name'], 'catlevel2name': data['catlevel2Name']}
             if self.s.query(Category).filter_by(cat_id = data_category['cat_id']).first() == None:
                 self.s.add(Category(**data_category))
             self.commit()

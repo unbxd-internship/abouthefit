@@ -11,6 +11,7 @@ class Category_Controller:
         self.category_model = category_model.Category_Model()
         self.s = self.category_model.database_model.start_session()
 
+    '''Get all the products in a category, depending on the level of the category and query parameters'''
     def get(self, catlevel1Name = None, catlevel2Name = None, request_params = None):
         cat_query = self.s.query(Category)
         if catlevel1Name is not None:
@@ -28,10 +29,11 @@ class Category_Controller:
         self.category_model.database_model.close_session()
         return final_result
 
+    '''Get all the categories and subcategories'''
     def get_category(self):
         catlevels = {}
         for i in self.s.query(Product.cat_id.distinct()).all():
-            print(i)
+            # print(i)
             catlevel1name, catlevel2name = self.s.query(Category.catlevel1name, Category.catlevel2name).filter(Category.cat_id == i[0]).first()
             if catlevel1name not in catlevels:
                 catlevels[catlevel1name] = ["NA"]
