@@ -10,6 +10,10 @@ import requests
 
 app = Flask(__name__)
 database_model_obj = database_model.Database_Model()
+try:
+    database_model_obj.create_table()
+except Exception as e:
+    print("table already exists")
 product_controller_obj = product_controller.Product_Controller()
 category_controller_obj =  category_controller.Category_Controller()
 CORS(app)
