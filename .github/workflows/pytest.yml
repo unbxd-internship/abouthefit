@@ -18,9 +18,21 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ./tests/requirements_tests.txt
 
-    - name: Docker Build
-      run: docker compose up -d --build
-    - name: Docker Run
-      run: docker compose up -d
+    - name: Docker Build and Push
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        docker build -t atf-backend-test:v1 .
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker push atf-backend-test:v1
+
+    - name: Start Kind Cluster
+      run : |
+        kind create cluster --name aboutthefit-test --config=./tests/workerNodes.yaml
+
+    - name: Apply Kubernetes Manifests
+      run: kubectl apply -f ./tests/deployment-test/
+
     - name: Run tests
       run: python -m pytest --import-mode=append tests/
