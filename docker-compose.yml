@@ -3,7 +3,7 @@ services:
 
   api:
     container_name: atf-backend
-    build: ./backendWebsite
+    build: /backendWebsite
     ports:
       - "5000:5000"
 

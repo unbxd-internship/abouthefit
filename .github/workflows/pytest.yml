@@ -25,7 +25,8 @@ jobs:
       run: |
         docker build -t atf-backend-test:v1 .
         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-        docker push atf-backend-test:v1
+        docker tag atf-backend-test:v1 $DOCKER_USERNAME/atf-backend-test:v1
+        docker push $DOCKER_USERNAME/atf-backend-test:v1
 
     - name: Start Kind Cluster
       run : |

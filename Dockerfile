@@ -12,7 +12,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt --no-cache-dir
 
 # Copy the rest of the application code to the container
-COPY . .
+COPY backendWebsite .
 
 # Specify the command to run when the container starts
 
