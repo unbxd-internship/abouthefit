@@ -21,7 +21,7 @@ jobs:
     - name: Docker Build and Push
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
         docker build -t atf-backend-test:v1 .
         echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
