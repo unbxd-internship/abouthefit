@@ -37,21 +37,24 @@ jobs:
 
     - name: Waiting Time
       run: |
-        echo "Waiting for 1 minute to ensure pods are running"
-        sleep 60s
+        echo "Waiting for 35 s to ensure pods are running"
+        sleep 35s
         echo "Done"
+
+    - name: Check pods status
+      run: kubctl get pods
 
     - name: Port Forward 5000
       run: kubectl port-forward service/api 5000:5000 &
 
     - name: Wait for Port Forwarding to begin
       run: |
-        echo "Waiting 10s for Port-Forwarding to begin"
-        sleep 10s
+        echo "Waiting 5s for Port-Forwarding to begin"
+        sleep 5s
         echo "Done"
 
     - name: Run tests
       run: python -m pytest --import-mode=append tests/
 
-    - name: Stop Port Forwarding
-      run: kill $(lsof -t -i:5000) || true
+    # - name: Stop Port Forwarding
+    #   run: kill $(lsof -t -i:5000) || true
