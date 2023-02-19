@@ -56,5 +56,3 @@ jobs:
     - name: Run tests
       run: python -m pytest --import-mode=append tests/
 
-    - name: Stop Port Forwarding
-      run: kill $(lsof -t -i:5000) || true
