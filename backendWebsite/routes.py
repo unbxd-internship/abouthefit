@@ -10,10 +10,9 @@ import requests
 
 app = Flask(__name__)
 database_model_obj = database_model.Database_Model()
-try:
-    database_model_obj.create_table()
-except Exception as e:
-    print("table already exists")
+flag = 0
+database_model_obj.create_table()
+
 product_controller_obj = product_controller.Product_Controller()
 category_controller_obj =  category_controller.Category_Controller()
 CORS(app)
@@ -35,9 +34,9 @@ def cache(key, value= None, ttl= None):
 
 @app.route('/check', methods=['GET'])
 def check():
-    '''Check if the app is up and running on Docker'''
+    '''Check if the app is up and running'''
     return Response(json.dumps({
-        'status': 'on docker'
+        'status': 'API is up and running'
     }), status=200, mimetype='application/json')
 
 
