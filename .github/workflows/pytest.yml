@@ -37,8 +37,8 @@ jobs:
 
     - name: Waiting Time
       run: |
-        echo "Waiting for 35 s to ensure pods are running"
-        sleep 35s
+        echo "Waiting for 75s to ensure pods are running"
+        sleep 75
         echo "Done"
 
     - name: Check pods status
@@ -50,11 +50,11 @@ jobs:
     - name: Wait for Port Forwarding to begin
       run: |
         echo "Waiting 5s for Port-Forwarding to begin"
-        sleep 5s
+        sleep 5
         echo "Done"
 
     - name: Run tests
       run: python -m pytest --import-mode=append tests/
 
-    # - name: Stop Port Forwarding
-    #   run: kill $(lsof -t -i:5000) || true
+    - name: Stop Port Forwarding
+      run: kill $(lsof -t -i:5000) || true
