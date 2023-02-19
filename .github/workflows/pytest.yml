@@ -42,7 +42,7 @@ jobs:
         echo "Done"
 
     - name: Port Forward 5000
-      run: nohup kubectl port-forward service/api 5000:5000
+      run: kubectl port-forward service/api 5000:5000 &
 
     - name: Wait for Port Forwarding to begin
       run: |
@@ -52,3 +52,6 @@ jobs:
 
     - name: Run tests
       run: python -m pytest --import-mode=append tests/
+
+    - name: Stop Port Forwarding
+      run: kill $(lsof -t -i:5000) || true
