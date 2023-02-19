@@ -53,10 +53,10 @@ def test_server_check():
 
 def test_hosted():
 
-    response = requests.get("http://127.0.0.1:5000/check")
+    response = requests.get("http://[::1]:5000/check")
     assert response.status_code == 200, "Server not up"
 
 def test_insert():
 
-    response = requests.post("http://127.0.0.1:5000/insert", json=sample_data)
+    response = requests.post("http://[::1]:5000/insert", json=sample_data)
     assert response.status_code == 200, "Insertion failed"
