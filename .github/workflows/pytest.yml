@@ -42,7 +42,7 @@ jobs:
         echo "Done"
 
     - name: Check pods status
-      run: kubctl get pods
+      run: kubectl get pods
 
     - name: Port Forward 5000
       run: kubectl port-forward service/api 5000:5000 &
