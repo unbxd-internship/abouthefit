@@ -53,6 +53,9 @@ jobs:
         sleep 5
         echo "Done"
 
+    - name: Check port status
+      run: lsof -i -P -n | grep LISTEN
+
     - name: Run tests
       run: python -m pytest --import-mode=append tests/
 
