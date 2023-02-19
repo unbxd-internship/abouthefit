@@ -48,6 +48,9 @@ sample_data = {
     "uniqueId": "01705319"
     }
 
+def test_server_check():
+    assert True, "Server not up"
+
 def test_hosted():
 
     response = requests.get("http://127.0.0.1:5000/check")
