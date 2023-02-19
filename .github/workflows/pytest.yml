@@ -39,10 +39,16 @@ jobs:
       run: |
         echo "Waiting for 1 minute to ensure pods are running"
         sleep 60s
-        echo "Waited"
+        echo "Done"
 
     - name: Port Forward 5000
-      run: kubectl port-forward service/api 5000:5000
+      run: nohup kubectl port-forward service/api 5000:5000
+
+    - name: Wait for Port Forwarding to begin
+      run: |
+        echo "Waiting 10s for Port-Forwarding to begin"
+        sleep 10s
+        echo "Done"
 
     - name: Run tests
       run: python -m pytest --import-mode=append tests/
