@@ -4,18 +4,19 @@ import json
 import redis
 from flask import Flask, request, Response
 from flask_cors import CORS
-from controllers import category_controller, search_controller, product_controller
+from controllers import category_controller, search_controller, product_controller, rec_controller
 from models import database_model
+from models import rec_model
 import requests
 
 app = Flask(__name__)
+CORS(app)
+app.flag = 0
 database_model_obj = database_model.Database_Model()
-flag = 0
 database_model_obj.create_table()
 
 product_controller_obj = product_controller.Product_Controller()
 category_controller_obj =  category_controller.Category_Controller()
-CORS(app)
 redis_cache = redis.Redis(host='redis', port=6379, db=0)
 
 def cache(key, value= None, ttl= None):
@@ -51,6 +52,7 @@ def insert():
                 res = database_model_obj.insert_data(json_data)
                 database_model_obj.commit()
                 database_model_obj.close_session()
+                flag = 0
                 if res:
                     return Response(json.dumps({
                         'status': 'ok'
@@ -170,3 +172,29 @@ def product(product_id):
             'status': 'server_error',
             'error': str(exc)
         }), status=500, mimetype='application/json')
+
+@app.route('/recommend/<product_id>', methods=['GET'])
+def recommend(product_id):
+    '''Get recommendations based on product id'''
+    try:
+        rec_controller_obj = rec_controller.Rec_Controller()
+        result = rec_controller_obj.get_recs(product_id)
+        result_ls = []
+        if result:
+            for i in result:
+                result_ls.append(product_controller_obj.get_product(i['sku']))
+            return Response(json.dumps(result_ls), status = 200, mimetype='application/json')
+
+        return Response(json.dumps({
+            'status': 'bad_request',
+            'error': 'Missing required arguments'
+        }), status=400, mimetype='application/json')
+
+    except Exception as exc:
+        return Response(json.dumps({
+            'status': 'server_error',
+            'error': str(exc)
+        }), status=500, mimetype='application/json')
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
