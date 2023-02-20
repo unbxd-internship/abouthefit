@@ -1,5 +1,5 @@
-![pylint workflow](https://github.com/anchh/aboutthefit/actions/workflows/pylint.yml/badge.svg)
-![pytest workflow](https://github.com/anchh/aboutthefit/actions/workflows/pytest.yml/badge.svg)
+![pylint workflow](https://github.com/unbxd-internship/abouthefit/actions/workflows/pylint.yml/badge.svg)
+![pytest workflow](https://github.com/unbxd-internship/abouthefit/actions/workflows/pytest.yml/badge.svg)
 # Summary
 
 To build an e-commerce website to facilitate the selling of apparel for a small business.
