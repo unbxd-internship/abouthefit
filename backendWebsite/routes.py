@@ -10,6 +10,9 @@ import requests
 
 app = Flask(__name__)
 database_model_obj = database_model.Database_Model()
+flag = 0
+database_model_obj.create_table()
+
 product_controller_obj = product_controller.Product_Controller()
 category_controller_obj =  category_controller.Category_Controller()
 CORS(app)
@@ -31,9 +34,9 @@ def cache(key, value= None, ttl= None):
 
 @app.route('/check', methods=['GET'])
 def check():
-    '''Check if the app is up and running on Docker'''
+    '''Check if the app is up and running'''
     return Response(json.dumps({
-        'status': 'on docker'
+        'status': 'API is up and running'
     }), status=200, mimetype='application/json')
 
 
@@ -45,12 +48,18 @@ def insert():
         if database_model_obj.validate_data(json_data):
             try:
                 database_model_obj.start_session()
-                database_model_obj.insert_data(json_data)
+                res = database_model_obj.insert_data(json_data)
                 database_model_obj.commit()
                 database_model_obj.close_session()
-                return Response(json.dumps({
-                    'status': 'ok'
-                }), status=200, mimetype='application/json')
+                if res:
+                    return Response(json.dumps({
+                        'status': 'ok'
+                    }), status=200, mimetype='application/json')
+                else:
+                    return Response(json.dumps({
+                        'status': 'bad_request',
+                        'error': 'Unable to insert data'
+                    }), status=400, mimetype='application/json')
             except Exception as exc:
                 return Response(json.dumps({
                     'status': 'server_error',

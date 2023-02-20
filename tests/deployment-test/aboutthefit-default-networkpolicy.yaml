@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  creationTimestamp: null
+  name: aboutthefit-default
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              io.kompose.network/aboutthefit-default: "true"
+  podSelector:
+    matchLabels:
+      io.kompose.network/aboutthefit-default: "true"
