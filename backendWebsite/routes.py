@@ -195,6 +195,3 @@ def recommend(product_id):
             'status': 'server_error',
             'error': str(exc)
         }), status=500, mimetype='application/json')
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
