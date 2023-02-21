@@ -18,6 +18,7 @@ function HomeScreen() {
   const [totalPages, setTotalPages]=useState(0);  //state variable to store total number of pages 
   const [pageNumber, setPageNumber]=useState(0);
   
+  
     useEffect(() => {
       client
       .get(endpoint) //call to API with current url endpoint

@@ -19,7 +19,7 @@ function CategoryDropdown(){
     useEffect(() => {
       const fetchLevelNames = async () => { 
         try {
-          const res = await client.get("/get_category"); //api call to get categories
+          const res = await client.get("/category_headers"); //api call to get categories
           setCatLevelNames(res.data);
         } catch (err) {
           setError(err.toString());

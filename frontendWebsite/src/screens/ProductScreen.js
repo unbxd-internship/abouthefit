@@ -5,6 +5,7 @@ import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import { useParams, useLocation } from 'react-router-dom'
 import props from 'prop-types'
 import { client } from '../utils/axios.util';
+import MoreLikeThis from '../components/MoreLikeThis'
 
 //to load product screen on click of any product 
 
@@ -13,15 +14,17 @@ function ProductScreen() {
     const [product, setProduct] = useState([]);
     const [id, setId]=useState(""); //to store sku of product to be loaded in product screen
     const location= useLocation();
-    const {productClicked}=location.state;
- 
-
+    const productClicked=location.state.productClicked;
+    
+    console.log("in product screen")
+    
     useEffect(() => {
         let endpoint = '/'
         const url = new URLSearchParams(window.location.search)
         const path = window.location.pathname.split('/');
         setId(path[2]);
         endpoint = `/product/${id}`
+       
         
         client.get(endpoint).then((res) => {
             setProduct(res.data);
@@ -30,12 +33,15 @@ function ProductScreen() {
             setProduct(productClicked)
         })
       }, [id])
-   
+      
+    console.log(product)
+    console.log(product.productimage);
+    console.log(product.productdescription)
       
     return (
-        
-        <div>  
-            <Row>
+        <div>
+        <div className='mt-5 mb-5'>  
+            <Row >
                 <Col md={6}>    
                     <Image src={product.productimage} alt={product.title} fluid />
                 </Col>
@@ -54,6 +60,11 @@ function ProductScreen() {
                 </Col>
                 <Col md={3}></Col>
             </Row>
+    </div>
+    <div className='mt-8 pt-5'>
+        <h3>Recommended For You</h3>
+        <MoreLikeThis />
+    </div>
     </div>
     )
    
