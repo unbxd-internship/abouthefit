@@ -8,11 +8,15 @@ import { Link } from 'react-router-dom'
 function Product({product}) {
 
     const productClicked=[];
+    
+
     return (
         <Card className=" my-3 p-3 rounded">
             <Link to={{
                 pathname: `/product/${product.sku}`,
-                state: { productClicked: product}
+                state: { 
+                    productClicked: product,     
+                }
             }}>
                 <Card.Img src= {product.productimage} />
             </Link>
