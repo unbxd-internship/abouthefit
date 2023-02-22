@@ -7,7 +7,6 @@ The website’s search will be powered by the Unbxd API and handle about 50 requ
 The website will feature various products organized by categories and subcategories to ensure that the customers are able to find the right product.
 Frontend - React, Backend - Flask, Database - PostgreSQL, Redis, Hosted - Docker
 
-<hr/>
 # API Specs
 
 The app works on 4 main APIs:
@@ -73,7 +72,6 @@ HOST: aboutthefit.as
 ## Link to Postman collection -
 <href> https://api.postman.com/collections/25321732-a00f5646-5f11-4664-a43d-5b2d6461cb24?access_key=PMAT-01GRJSJEDW1K16J2T9V3PPRRHB <href>
 
-<hr/>
 # Docker Images
 
 The frontend and the backend are built on separate docker images.
@@ -93,7 +91,6 @@ The backend can be accessed on http://localhost:5000/
 A file called "json_to_db_pipeline.py" has to be run within the docker container to perform ingestion. This can be done by:
 `docker exec -it atf-backend python3 json_to_db_pipeline.py`
 
-<hr/>
 # Kubernetes Deployment
 
 To deploy these docker images on a Kubernetes Kind Cluster
@@ -133,10 +130,4 @@ A file called "json_to_db_pipeline.py" has to be run within the cluster to perfo
 ###   b. Copy the pod name for api and run
 `kubectl exec -it pod_name python3 json_to_db_pipeline.py`
 
-<hr/>
 Images of Functional Website
-
-
-
-
-
