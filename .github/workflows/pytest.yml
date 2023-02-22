@@ -37,9 +37,8 @@ jobs:
 
     - name: Waiting Time
       run: |
-        echo "Waiting for 75s to ensure pods are running"
-        sleep 75
-        echo "Done"
+        sleep 20
+        kubectl rollout status deployment api
 
     - name: Check pods status
       run: kubectl get pods

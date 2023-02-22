@@ -4,22 +4,23 @@ import json
 import redis
 from flask import Flask, request, Response
 from flask_cors import CORS
-from controllers import category_controller, search_controller, product_controller
+from controllers import category_controller, search_controller, product_controller, rec_controller
 from models import database_model
+from models import rec_model
 import requests
 
 app = Flask(__name__)
+CORS(app)
+app.flag = 0
 database_model_obj = database_model.Database_Model()
-flag = 0
 database_model_obj.create_table()
 
 product_controller_obj = product_controller.Product_Controller()
 category_controller_obj =  category_controller.Category_Controller()
-CORS(app)
 redis_cache = redis.Redis(host='redis', port=6379, db=0)
 
 def cache(key, value= None, ttl= None):
-    '''Function defining the cache'''
+    #Function defining the cache
     if value:
         if ttl:
             redis_cache.setex(key, ttl, pickle.dumps(value))
@@ -51,6 +52,7 @@ def insert():
                 res = database_model_obj.insert_data(json_data)
                 database_model_obj.commit()
                 database_model_obj.close_session()
+                flag = 0
                 if res:
                     return Response(json.dumps({
                         'status': 'ok'
@@ -164,6 +166,37 @@ def product(product_id):
             'status': 'bad_request',
             'error': 'Missing required arguments'
         }), status=400, mimetype='application/json')
+
+    except Exception as exc:
+        return Response(json.dumps({
+            'status': 'server_error',
+            'error': str(exc)
+        }), status=500, mimetype='application/json')
+
+@app.route('/recommend/<product_id>', methods=['GET'])
+def recommend(product_id):
+    '''Get recommendations based on product id'''
+    try:
+        rec_controller_obj = rec_controller.Rec_Controller()
+        product = product_controller_obj.get_product(product_id)
+
+        if product:
+            result = rec_controller_obj.get_recs(product_id)
+        else:
+            result = category_controller_obj.get(request_params = request.args)
+            result = result['products']
+            result = result[:5]
+
+        result_ls = []
+        if result:
+            for i in result:
+                if i['sku'] == product_id:
+                    pass
+                else:
+                    result_ls.append(product_controller_obj.get_product(i['sku']))
+        if len(result_ls)==4:
+            return Response(json.dumps(result_ls), status = 200, mimetype='application/json')
+        return Response(json.dumps(result_ls[:4]), status=200, mimetype='application/json')
 
     except Exception as exc:
         return Response(json.dumps({
