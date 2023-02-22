@@ -20,7 +20,7 @@ category_controller_obj =  category_controller.Category_Controller()
 redis_cache = redis.Redis(host='redis', port=6379, db=0)
 
 def cache(key, value= None, ttl= None):
-    '''Function defining the cache'''
+    #Function defining the cache
     if value:
         if ttl:
             redis_cache.setex(key, ttl, pickle.dumps(value))
@@ -178,17 +178,25 @@ def recommend(product_id):
     '''Get recommendations based on product id'''
     try:
         rec_controller_obj = rec_controller.Rec_Controller()
-        result = rec_controller_obj.get_recs(product_id)
+        product = product_controller_obj.get_product(product_id)
+
+        if product:
+            result = rec_controller_obj.get_recs(product_id)
+        else:
+            result = category_controller_obj.get(request_params = request.args)
+            result = result['products']
+            result = result[:5]
+
         result_ls = []
         if result:
             for i in result:
-                result_ls.append(product_controller_obj.get_product(i['sku']))
+                if i['sku'] == product_id:
+                    pass
+                else:
+                    result_ls.append(product_controller_obj.get_product(i['sku']))
+        if len(result_ls)==4:
             return Response(json.dumps(result_ls), status = 200, mimetype='application/json')
-
-        return Response(json.dumps({
-            'status': 'bad_request',
-            'error': 'Missing required arguments'
-        }), status=400, mimetype='application/json')
+        return Response(json.dumps(result_ls[:4]), status=200, mimetype='application/json')
 
     except Exception as exc:
         return Response(json.dumps({

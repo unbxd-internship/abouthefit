@@ -18,7 +18,7 @@ class Rec_Controller:
 
             results[row['sku']] = similar_items[1:]
 
-        recommended_items =  self.recommend(results,sku,4)
+        recommended_items =  self.recommend(results,sku,5)
         return recommended_items
 
     def item(self, id):
