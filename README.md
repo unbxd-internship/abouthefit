@@ -95,10 +95,10 @@ A file called "json_to_db_pipeline.py" has to be run within the docker container
 
 To deploy these docker images on a Kubernetes Kind Cluster
 
-## 1. Create the cluster
+### 1. Create the cluster
 `kind create cluster --name aboutthefit --config=/deployment/workerNodes.yaml`
 
-## 2. Set up Ingress
+### 2. Set up Ingress
 ```
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 kubectl wait --namespace metallb-system  --for=condition=ready pod  --selector=app=metallb --timeout=90s
@@ -107,27 +107,42 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 kubectl wait --namespace ingress-nginx --for=condition=ready pod  --selector=app.kubernetes.io/component=controller --timeout=90s
 ```
 
-## 3. Apply Kubernetes Manifests
+### 3. Apply Kubernetes Manifests
 `kubectl apply -f deployment/`
 
-## 4. Check if Ingress is enabled
+### 4. Check if Ingress is enabled
 `kubectl get ingress`
 
-## 5. Add preferred HostName (as specified in ingress file)
+### 5. Add preferred HostName (as specified in ingress file)
 `sudo vi /etc/hosts`
 add to this file 
 `127.0.0.1       aboutthefit.as`
 
-## 6. Port Forward the Backend
+### 6. Port Forward the Backend
 `kubectl port-forward service/api 5000:5000`
 
-## 7. To ingest json data into the database
+### 7. To ingest json data into the database
 A file called "json_to_db_pipeline.py" has to be run within the cluster to perform ingestion. This can be done by:
 
-###   a. Checking the name of the API pod
+####   a. Checking the name of the API pod
 `kubectl get pods`
 
-###   b. Copy the pod name for api and run
+####   b. Copy the pod name for api and run
 `kubectl exec -it pod_name python3 json_to_db_pipeline.py`
 
-Images of Functional Website
+# Images of Functional Website
+## Category Drop Down -
+![categories drop down](https://github.com/unbxd-internship/abouthefit/blob/main/images/Category%20Dropdown.png)
+
+## Sorted Results & Pagination
+![sorting and pagination](https://github.com/unbxd-internship/abouthefit/blob/main/images/Cateogory%20Pagination%20and%20Sorting.png)
+
+## Home Page/ Catalog Screen
+![catalog_screen](https://github.com/unbxd-internship/abouthefit/blob/main/images/HomePage.png)
+
+## Product Screen
+![product_screen](https://github.com/unbxd-internship/abouthefit/blob/main/images/Product%20Screen.png)
+
+## Recommended For You Section
+![recommendations](https://github.com/unbxd-internship/abouthefit/blob/main/images/Recommendations.png)
+
